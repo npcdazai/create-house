@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-alabaster: #F5F3EF;
+  --bg-espresso: #1E1C1A;
+  --text-carbon: #141413;
+  --text-warm-grey: #6E6A64;
+  --accent-bronze: #8C7E72;
+  --surface-bone: #FAF9F6;
+  --border-hairline: rgba(20, 20, 19, 0.12);
+}
+
+html,
+body {
+  background-color: #F5F3EF;
+  color: #141413;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Lenis smooth scroll base rules */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+::selection {
+  background: #141413;
+  color: #F5F3EF;
+}
