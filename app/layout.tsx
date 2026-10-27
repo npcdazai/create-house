@@ -33,6 +33,14 @@ export const metadata: Metadata = {
   title: "CREATE HOUSE — Interior & Architectural Designs | Akash Mane",
   description:
     "Create House by Founder & Principal Architect Akash Mane. Contemplative residences defined by untamed light, monolithic stone, and enduring spatial calm.",
+  icons: {
+    icon: [
+      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/favicon.ico", sizes: "any" },
+    ],
+    shortcut: "/favicon.ico",
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+  },
 };
 
 export default function RootLayout({
