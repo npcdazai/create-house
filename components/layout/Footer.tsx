@@ -59,13 +59,13 @@ export function Footer() {
           </p>
         </div>
 
-        {/* Column 2: Locations */}
+        {/* Column 2: Location */}
         <div className="space-y-4">
           <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#6E6A64]">
-            02 / Locations
+            02 / Location
           </div>
           <div className="text-lg font-medium tracking-tight text-[#141413]">
-            Mumbai / London / Kyoto
+            Mumbai
           </div>
           <ul className="space-y-3 text-sm text-[#6E6A64]">
             <li className="flex flex-col">
@@ -73,18 +73,6 @@ export function Footer() {
                 MUMBAI — 19.0760° N, 72.8777° E
               </span>
               <span>Ballard Estate, Fort, Mumbai 400001</span>
-            </li>
-            <li className="flex flex-col">
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#141413]">
-                LONDON — 51.5072° N, 0.1276° W
-              </span>
-              <span>24 Mount Street, Mayfair, London W1K 2TH</span>
-            </li>
-            <li className="flex flex-col">
-              <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#141413]">
-                KYOTO — 35.0116° N, 135.7681° E
-              </span>
-              <span>Nanzenji Fukuchicho, Sakyo Ward, Kyoto 606-8435</span>
             </li>
           </ul>
         </div>

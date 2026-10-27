@@ -207,7 +207,7 @@ export function Navbar() {
                     </p>
                   </div>
                   <p className="text-sm text-white/70 leading-relaxed">
-                    Create House ateliers in Mumbai, London, and Kyoto craft bespoke architectural residences and interiors.
+                    Our Create House atelier in Mumbai crafts bespoke architectural residences and interiors.
                   </p>
                 </div>
 
