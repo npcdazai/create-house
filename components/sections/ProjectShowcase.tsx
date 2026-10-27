@@ -87,25 +87,25 @@ export function ProjectShowcase() {
     <section
       id="portfolio"
       ref={sectionRef}
-      className="py-28 border-t border-black/10 bg-[#F5F3EF] text-[#141413] overflow-hidden"
+      className="py-16 md:py-28 border-t border-black/10 bg-[#F5F3EF] text-[#141413] overflow-hidden"
     >
       {/* Header Row */}
-      <div className="px-6 md:px-14 mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6">
-        <div className="space-y-3">
+      <div className="px-4 sm:px-6 md:px-14 mb-8 md:mb-12 flex flex-col md:flex-row md:items-end justify-between gap-4 sm:gap-6">
+        <div className="space-y-2 sm:space-y-3">
           <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#6E6A64]">
             02 / ARCHIVE 2026
           </div>
-          <h2 className="text-[clamp(2.25rem,4.5vw,4.25rem)] font-medium tracking-[-0.03em] leading-[1.04] text-[#141413]">
+          <h2 className="text-[clamp(1.85rem,4.5vw,4.25rem)] font-medium tracking-[-0.03em] leading-[1.04] text-[#141413]">
             {activeProject.title}
           </h2>
         </div>
 
         {/* Minimal Carousel Controls: < 1/3 > */}
-        <div className="flex items-center gap-6 self-start md:self-end">
-          <div className="hidden sm:block font-mono text-[11px] uppercase tracking-[0.08em] text-[#6E6A64]">
+        <div className="flex items-center justify-between sm:justify-start w-full md:w-auto gap-4 sm:gap-6 self-start md:self-end">
+          <div className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#6E6A64]">
             {activeProject.location} — {activeProject.year}
           </div>
-          <div className="inline-flex items-center border border-black/15 bg-[#EAE6DF]/60">
+          <div className="inline-flex items-center border border-black/15 bg-[#EAE6DF]/60 shrink-0">
             <button
               type="button"
               onClick={handlePrev}
@@ -132,25 +132,25 @@ export function ProjectShowcase() {
       {/* Expanding 16:9 Showcase Image Container */}
       <div
         ref={imageContainerRef}
-        className="w-[86%] mx-auto aspect-[16/9] relative overflow-hidden bg-[#EAE6DF]"
+        className="w-[92%] sm:w-[86%] mx-auto aspect-[4/3] sm:aspect-[16/9] relative overflow-hidden bg-[#EAE6DF]"
       >
         <ParallaxImage
           key={activeProject.image}
           src={activeProject.image}
           alt={`${activeProject.title} — ${activeProject.location}`}
-          aspectRatio="aspect-[16/9]"
+          aspectRatio="aspect-[4/3] sm:aspect-[16/9]"
           speed={0.1}
           className="h-full w-full"
           imgClassName="h-full w-full object-cover"
         />
 
         {/* Subtle bottom metadata overlay bar */}
-        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/65 via-black/25 to-transparent p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-4 text-[#F5F3EF]">
+        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/75 via-black/30 to-transparent p-4 sm:p-6 md:p-10 flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4 text-[#F5F3EF]">
           <div className="space-y-1 max-w-xl">
-            <div className="font-mono text-[10px] uppercase tracking-[0.12em] text-white/75">
+            <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.1em] text-white/80">
               {activeProject.dimensions} // {activeProject.materiality}
             </div>
-            <p className="text-xs md:text-sm text-white/90 leading-relaxed">
+            <p className="hidden sm:block text-xs md:text-sm text-white/90 leading-relaxed">
               {activeProject.caption}
             </p>
           </div>
@@ -173,6 +173,11 @@ export function ProjectShowcase() {
           </div>
         </div>
       </div>
+
+      {/* Mobile-only caption below image so it never crowds the photograph */}
+      <p className="sm:hidden px-4 pt-4 text-xs text-[#6E6A64] leading-relaxed">
+        {activeProject.caption}
+      </p>
     </section>
   );
 }

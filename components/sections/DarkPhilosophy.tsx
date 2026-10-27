@@ -74,7 +74,7 @@ export function DarkPhilosophy() {
       {/* Foreground 12-col Grid */}
       <div
         ref={contentRef}
-        className="px-6 md:px-14 py-36 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
+        className="px-4 sm:px-6 md:px-14 py-16 md:py-36 relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center"
       >
         {/* Cols 1-5: Square Architectural Shadow Study */}
         <div className="lg:col-span-5 space-y-4">

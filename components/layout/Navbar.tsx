@@ -132,9 +132,9 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-x-0 top-20 z-40 border-b border-black/15 bg-[#1E1C1A] text-[#F5F3EF] shadow-2xl"
+            className="fixed inset-x-0 top-20 z-40 max-h-[calc(100vh-5rem)] overflow-y-auto border-b border-black/15 bg-[#1E1C1A] text-[#F5F3EF] shadow-2xl"
           >
-            <div className="px-6 md:px-14 py-12 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-12">
+            <div className="px-6 md:px-14 py-10 md:py-16 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12">
               {/* Column 1: Primary Navigation */}
               <div className="lg:col-span-4 space-y-6">
                 <p className="font-mono text-[11px] uppercase tracking-[0.12em] text-[#8C7A6B]">

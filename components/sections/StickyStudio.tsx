@@ -75,7 +75,7 @@ export function StickyStudio() {
     <section
       id="studio"
       ref={sectionRef}
-      className="relative px-6 md:px-14 py-36 border-t border-black/10 bg-[#F5F3EF] text-[#141413] overflow-hidden"
+      className="relative px-4 sm:px-6 md:px-14 py-16 md:py-36 border-t border-black/10 bg-[#F5F3EF] text-[#141413] overflow-hidden"
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start">
         {/* Left Column (Cols 1-5): Pinned Studio Narrative */}
@@ -121,7 +121,7 @@ export function StickyStudio() {
         </div>
 
         {/* Right Column (Cols 6-12): Vertical Scrolling Stack */}
-        <div ref={rightColRef} className="lg:col-span-7 space-y-28">
+        <div ref={rightColRef} className="lg:col-span-7 space-y-16 md:space-y-28">
           {RESIDENCES.map((item) => (
             <article key={item.index} className="space-y-6">
               {/* Top Index Metadata Bar */}

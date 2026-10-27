@@ -7,6 +7,7 @@ interface DiurnalOption {
   id: string;
   index: string;
   codeLabel: string;
+  shortLabel: string;
   hudLabel: string;
   kelvin: string;
   lux: number;
@@ -24,6 +25,7 @@ interface DiurnalOption {
 interface MaterialOption {
   id: string;
   name: string;
+  shortName: string;
   fig: string;
   archiveRef: string;
   origin: string;
@@ -42,6 +44,7 @@ const DIURNAL_CYCLES: DiurnalOption[] = [
     id: "morning-mist",
     index: "01",
     codeLabel: "01. MORNING MIST 5500K",
+    shortLabel: "01. MORNING MIST",
     hudLabel: "Morning Mist 5500K",
     kelvin: "5500K",
     lux: 640,
@@ -55,12 +58,13 @@ const DIURNAL_CYCLES: DiurnalOption[] = [
       "linear-gradient(110deg, rgba(255,255,255,0.16) 0%, rgba(255,255,255,0.02) 48%, rgba(16,22,28,0.34) 100%)",
     imageScale: 1.02,
     imageOrigin: "45% 50%",
-    indicatorColor: "#B8C7D4",
+    indicatorColor: "#8FAEC7",
   },
   {
     id: "high-noon",
     index: "02",
     codeLabel: "02. HIGH NOON ZENITH",
+    shortLabel: "02. HIGH NOON",
     hudLabel: "High Noon Zenith",
     kelvin: "6500K",
     lux: 1120,
@@ -74,12 +78,13 @@ const DIURNAL_CYCLES: DiurnalOption[] = [
       "linear-gradient(180deg, rgba(255,255,255,0.18) 0%, rgba(20,20,19,0.05) 38%, rgba(20,20,19,0.44) 100%)",
     imageScale: 1.0,
     imageOrigin: "50% 45%",
-    indicatorColor: "#F5F3EF",
+    indicatorColor: "#E8C56B",
   },
   {
     id: "golden-hour",
     index: "03",
     codeLabel: "03. GOLDEN HOUR 2700K",
+    shortLabel: "03. GOLDEN HOUR",
     hudLabel: "Golden Hour 2700K",
     kelvin: "2700K",
     lux: 380,
@@ -99,6 +104,7 @@ const DIURNAL_CYCLES: DiurnalOption[] = [
     id: "midnight-ember",
     index: "04",
     codeLabel: "04. MIDNIGHT EMBER",
+    shortLabel: "04. MIDNIGHT",
     hudLabel: "Midnight Ember",
     kelvin: "2100K",
     lux: 85,
@@ -120,6 +126,7 @@ const MATERIAL_PALETTES: MaterialOption[] = [
   {
     id: "roman-travertine",
     name: "Roman Travertine",
+    shortName: "Travertine",
     fig: "FIG. 01",
     archiveRef: "CH—RES—04",
     origin: "TIVOLI QUARRY · VEIN-CUT HONED",
@@ -136,6 +143,7 @@ const MATERIAL_PALETTES: MaterialOption[] = [
   {
     id: "rift-sawn-oak",
     name: "Rift-Sawn Oak",
+    shortName: "Rift Oak",
     fig: "FIG. 02",
     archiveRef: "CH—RES—04",
     origin: "DANISH HEARTWOOD · RAW OIL FINISH",
@@ -152,6 +160,7 @@ const MATERIAL_PALETTES: MaterialOption[] = [
   {
     id: "tadelakt-limewash",
     name: "Tadelakt Limewash",
+    shortName: "Limewash",
     fig: "FIG. 03",
     archiveRef: "CH—RES—04",
     origin: "MARRAKECH LIME · RIVER-STONE BURNISHED",
@@ -170,9 +179,6 @@ const MATERIAL_PALETTES: MaterialOption[] = [
 const AUTO_CYCLE_MS = 3500;
 
 export default function SpatialSculptor() {
-  // Default active states per specification:
-  // Diurnal Cycle: 03. GOLDEN HOUR 2700K
-  // Material Palette: Roman Travertine
   const [selectedCycleId, setSelectedCycleId] = useState<string>("golden-hour");
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>("roman-travertine");
   const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true);
@@ -197,15 +203,38 @@ export default function SpatialSculptor() {
     MATERIAL_PALETTES.find((item) => item.id === selectedMaterialId) ?? MATERIAL_PALETTES[0];
 
   return (
-    <section id="atelier" className="px-6 md:px-14 py-16 bg-[#F5F3EF]">
+    <section id="atelier" className="px-4 sm:px-6 md:px-14 py-10 md:py-16 bg-[#F5F3EF]">
       <div className="mx-auto max-w-[1440px]">
-        <div className="rounded-none border border-black/15 bg-white/65 backdrop-blur-2xl shadow-[0_32px_80px_rgba(20,20,19,0.08)] p-8 md:p-12">
-          {/* 12-Column Interactive Split */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-stretch">
-            {/* Left Column (Cols 1-5) */}
-            <div className="lg:col-span-5 flex flex-col justify-between space-y-8">
-              {/* Top Heading & Narrative */}
-              <div className="space-y-4">
+        <div className="rounded-none border border-black/15 bg-white/65 backdrop-blur-2xl shadow-[0_32px_80px_rgba(20,20,19,0.08)] p-5 sm:p-8 md:p-12">
+          {/* Mobile-only Top Header so the Title sits above the Viewport on phones */}
+          <div className="lg:hidden space-y-2.5 pb-5">
+            <div className="flex items-center justify-between border-b border-black/10 pb-2.5">
+              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64] flex items-center gap-2">
+                <span
+                  className="inline-block h-1.5 w-1.5 rounded-none"
+                  style={{ backgroundColor: activeCycle.indicatorColor }}
+                />
+                INTERACTIVE ENGINE
+              </span>
+              <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
+                {activeCycle.azimuth}
+              </span>
+            </div>
+            <h2 className="text-xl sm:text-2xl font-medium tracking-[-0.03em] text-[#141413]">
+              Spatial &amp; Atmospheric Sculptor
+            </h2>
+            <p className="text-xs sm:text-sm leading-relaxed text-[#6E6A64]">
+              Simulate the natural diurnal transition and tactile materiality across our core
+              residential envelopes.
+            </p>
+          </div>
+
+          {/* 12-Column Interactive Split (Viewport first on mobile so users see live changes as they tap!) */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-12 items-stretch">
+            {/* Left Column (Cols 1-5 on Desktop, Order 2 on Mobile) */}
+            <div className="order-2 lg:order-1 lg:col-span-5 flex flex-col justify-between space-y-6 lg:space-y-8">
+              {/* Desktop Heading & Narrative */}
+              <div className="hidden lg:block space-y-4">
                 <div className="flex items-center justify-between border-b border-black/10 pb-3">
                   <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#6E6A64] flex items-center gap-2">
                     <span
@@ -230,9 +259,9 @@ export default function SpatialSculptor() {
               </div>
 
               {/* Diurnal Cycle Selector (4 Interactive Rows) */}
-              <div className="space-y-2.5" role="radiogroup" aria-label="Diurnal Lighting Cycle">
-                <div className="flex items-center justify-between pb-1">
-                  <div className="flex items-center gap-2.5">
+              <div className="space-y-2" role="radiogroup" aria-label="Diurnal Lighting Cycle">
+                <div className="flex items-center justify-between pb-1 gap-2">
+                  <div className="flex items-center gap-2">
                     <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
                       DIURNAL SOLAR SEQUENCE
                     </span>
@@ -240,7 +269,11 @@ export default function SpatialSculptor() {
                       type="button"
                       onClick={() => setIsAutoCycling((prev) => !prev)}
                       className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-black/15 font-mono text-[9px] uppercase tracking-[0.08em] text-[#141413] hover:bg-black/5 transition-colors cursor-pointer"
-                      title={isAutoCycling ? "Pause automatic solar sequence" : "Resume automatic solar sequence"}
+                      title={
+                        isAutoCycling
+                          ? "Pause automatic solar sequence"
+                          : "Resume automatic solar sequence"
+                      }
                     >
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${
@@ -250,7 +283,7 @@ export default function SpatialSculptor() {
                       <span>{isAutoCycling ? "AUTO" : "PAUSED"}</span>
                     </button>
                   </div>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
+                  <span className="hidden sm:inline font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
                     KELVIN / ILLUMINANCE
                   </span>
                 </div>
@@ -265,34 +298,35 @@ export default function SpatialSculptor() {
                         role="radio"
                         aria-checked={isActive}
                         onClick={() => setSelectedCycleId(cycle.id)}
-                        className={`group relative w-full text-left px-4 py-3.5 transition-colors duration-300 flex items-center justify-between overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] cursor-pointer ${
+                        className={`group relative w-full text-left px-3.5 sm:px-4 py-3 sm:py-3.5 transition-colors duration-300 flex items-center justify-between gap-2 overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] cursor-pointer ${
                           isActive
                             ? "bg-[#141413] text-[#F5F3EF]"
                             : "bg-transparent text-[#141413] hover:bg-black/[0.04]"
                         }`}
                       >
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2.5 min-w-0">
                           <span
-                            className={`h-2 w-2 rounded-none transition-transform duration-300 ${
-                              isActive ? "scale-110" : "opacity-60 group-hover:opacity-100"
+                            className={`h-2.5 w-2.5 shrink-0 rounded-none border border-black/20 transition-transform duration-300 ${
+                              isActive ? "scale-110 border-white/30" : "opacity-85 group-hover:opacity-100"
                             }`}
                             style={{ backgroundColor: cycle.indicatorColor }}
                           />
-                          <span className="font-mono text-xs uppercase tracking-[0.08em]">
-                            {cycle.codeLabel}
+                          <span className="font-mono text-[11px] sm:text-xs uppercase tracking-[0.06em] sm:tracking-[0.08em] truncate">
+                            <span className="sm:hidden">{cycle.shortLabel}</span>
+                            <span className="hidden sm:inline">{cycle.codeLabel}</span>
                           </span>
                         </div>
 
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-2 sm:gap-3 shrink-0">
                           <span
-                            className={`font-mono text-[11px] uppercase tracking-[0.08em] ${
+                            className={`font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.06em] whitespace-nowrap ${
                               isActive ? "text-[#F5F3EF]/80" : "text-[#6E6A64]"
                             }`}
                           >
                             LUX {cycle.lux}
                           </span>
                           <span
-                            className={`font-mono text-[10px] uppercase tracking-[0.08em] px-1.5 py-0.5 border ${
+                            className={`font-mono text-[10px] uppercase tracking-[0.06em] px-1.5 py-0.5 border whitespace-nowrap ${
                               isActive
                                 ? "border-white/20 text-[#F5F3EF]"
                                 : "border-black/10 text-[#6E6A64]"
@@ -319,19 +353,20 @@ export default function SpatialSculptor() {
                 </div>
               </div>
 
-              {/* Material Palette Pills / Rectilinear Buttons & Live Telemetry */}
-              <div className="space-y-4 pt-2 border-t border-black/10">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
-                    TACTILE ENVELOPE SUBSTRATE
+              {/* Material Palette Selector & Live Telemetry */}
+              <div className="space-y-3.5 pt-2 border-t border-black/10">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64] shrink-0">
+                    TACTILE SUBSTRATE
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
+                  <span className="font-mono text-[10px] uppercase tracking-[0.06em] text-[#6E6A64] truncate text-right">
                     {activeMaterial.origin}
                   </span>
                 </div>
 
+                {/* 3-Column Horizontal Grid on both Mobile and Desktop so all 3 fit on one row */}
                 <div
-                  className="grid grid-cols-1 sm:grid-cols-3 gap-2"
+                  className="grid grid-cols-3 gap-1.5 sm:gap-2"
                   role="radiogroup"
                   aria-label="Material Palette"
                 >
@@ -344,18 +379,19 @@ export default function SpatialSculptor() {
                         role="radio"
                         aria-checked={isSelected}
                         onClick={() => setSelectedMaterialId(material.id)}
-                        className={`relative rounded-none border px-3 py-2.5 text-left transition-all duration-300 flex items-center gap-2.5 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] ${
+                        className={`relative rounded-none border px-2.5 sm:px-3 py-2.5 text-left transition-all duration-300 flex items-center gap-2 focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] cursor-pointer ${
                           isSelected
                             ? "border-[#141413] bg-[#141413] text-[#F5F3EF]"
                             : "border-black/15 bg-white/50 text-[#141413] hover:border-black/35 hover:bg-white/80"
                         }`}
                       >
                         <span
-                          className="h-3 w-3 shrink-0 rounded-none border border-black/20"
+                          className="h-2.5 w-2.5 sm:h-3 sm:w-3 shrink-0 rounded-none border border-black/20"
                           style={{ backgroundColor: material.swatchHex }}
                         />
-                        <span className="text-xs font-medium tracking-[-0.01em] truncate">
-                          {material.name}
+                        <span className="text-[11px] sm:text-xs font-medium tracking-[-0.01em] truncate">
+                          <span className="sm:hidden">{material.shortName}</span>
+                          <span className="hidden sm:inline">{material.name}</span>
                         </span>
                       </button>
                     );
@@ -363,28 +399,28 @@ export default function SpatialSculptor() {
                 </div>
 
                 {/* Acoustic & Thermal Reflectance Telemetry Strip */}
-                <div className="grid grid-cols-3 gap-2 border border-black/10 bg-[#F5F3EF]/80 p-3">
+                <div className="grid grid-cols-3 gap-2 border border-black/10 bg-[#F5F3EF]/80 p-2.5 sm:p-3">
                   <div>
-                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
+                    <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.06em] text-[#6E6A64] truncate">
                       REFLECTANCE
                     </div>
-                    <div className="font-mono text-xs text-[#141413] mt-0.5">
+                    <div className="font-mono text-[11px] sm:text-xs text-[#141413] mt-0.5 whitespace-nowrap">
                       {activeMaterial.reflectance}
                     </div>
                   </div>
-                  <div className="border-l border-black/10 pl-3">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
-                      ACOUSTIC ABS.
+                  <div className="border-l border-black/10 pl-2.5 sm:pl-3">
+                    <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.06em] text-[#6E6A64] truncate">
+                      ACOUSTIC
                     </div>
-                    <div className="font-mono text-xs text-[#141413] mt-0.5">
+                    <div className="font-mono text-[11px] sm:text-xs text-[#141413] mt-0.5 whitespace-nowrap">
                       {activeMaterial.acousticNrc}
                     </div>
                   </div>
-                  <div className="border-l border-black/10 pl-3">
-                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
-                      CONDUCTIVITY
+                  <div className="border-l border-black/10 pl-2.5 sm:pl-3">
+                    <div className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.06em] text-[#6E6A64] truncate">
+                      THERMAL
                     </div>
-                    <div className="font-mono text-xs text-[#141413] mt-0.5">
+                    <div className="font-mono text-[11px] sm:text-xs text-[#141413] mt-0.5 whitespace-nowrap">
                       {activeMaterial.thermalMass}
                     </div>
                   </div>
@@ -392,8 +428,8 @@ export default function SpatialSculptor() {
               </div>
             </div>
 
-            {/* Right Column (Cols 6-12): Interactive Architectural Viewport */}
-            <div className="lg:col-span-7 relative min-h-[420px] lg:min-h-[540px] overflow-hidden border border-black/10 bg-[#141413]">
+            {/* Right Column (Cols 6-12 on Desktop, Order 1 on Mobile): Interactive Architectural Viewport */}
+            <div className="order-1 lg:order-2 lg:col-span-7 relative aspect-[4/3] sm:aspect-[16/10] lg:aspect-auto lg:min-h-[540px] overflow-hidden border border-black/10 bg-[#141413]">
               {/* Crossfading High-Res Architectural Interior Photograph */}
               <AnimatePresence mode="wait">
                 <motion.div
@@ -450,40 +486,40 @@ export default function SpatialSculptor() {
                 }}
               />
 
-              {/* Subtle Architectural Framing Reticle Lines */}
+              {/* Subtle Architectural Framing Reticle Lines (Desktop/Tablet) */}
               <div
                 aria-hidden="true"
-                className="pointer-events-none absolute inset-5 border border-white/15"
+                className="pointer-events-none hidden sm:block absolute inset-5 border border-white/15"
               />
 
               {/* Top-Left Solar Calibration Tag */}
-              <div className="pointer-events-none absolute top-8 left-8 hidden sm:flex items-center gap-2 bg-[#141413]/55 backdrop-blur-md border border-white/15 px-3 py-1.5">
+              <div className="pointer-events-none absolute top-4 left-4 sm:top-8 sm:left-8 hidden md:flex items-center gap-2 bg-[#141413]/55 backdrop-blur-md border border-white/15 px-3 py-1.5">
                 <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#F5F3EF]/85">
                   ENVELOPE // {activeMaterial.name.toUpperCase()}
                 </span>
               </div>
 
               {/* Top-Right Live Frosted Telemetry HUD Badge */}
-              <div className="absolute top-8 right-8 z-10">
+              <div className="absolute top-3 right-3 sm:top-8 sm:right-8 z-10">
                 <motion.div
                   key={`${activeCycle.id}-${activeMaterial.fig}`}
                   initial={{ opacity: 0, y: -6 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.35, ease: "easeOut" }}
-                  className="bg-[#141413]/70 backdrop-blur-xl border border-white/20 px-3.5 py-2 flex items-center gap-2.5 shadow-lg"
+                  className="bg-[#141413]/75 backdrop-blur-xl border border-white/20 px-2.5 py-1.5 sm:px-3.5 sm:py-2 flex items-center gap-2 shadow-lg"
                 >
                   <span
-                    className="h-2 w-2 rounded-none"
+                    className="h-2 w-2 shrink-0 rounded-none"
                     style={{ backgroundColor: activeCycle.indicatorColor }}
                   />
-                  <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#F5F3EF]">
+                  <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.06em] sm:tracking-[0.08em] text-[#F5F3EF] whitespace-nowrap">
                     {activeCycle.hudLabel} — LUX {activeCycle.lux} / {activeMaterial.fig}
                   </span>
                 </motion.div>
               </div>
 
-              {/* Bottom Monograph Bar */}
-              <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#141413]/95 via-[#141413]/80 to-transparent pt-12 pb-6 px-6 md:px-8">
+              {/* Bottom Monograph Bar (Compact on Mobile so the image remains unobstructed) */}
+              <div className="absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-[#141413]/95 via-[#141413]/70 to-transparent pt-8 sm:pt-12 pb-3.5 sm:pb-6 px-4 sm:px-6 md:px-8">
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={`${activeMaterial.id}-${activeCycle.id}-monograph`}
@@ -491,24 +527,24 @@ export default function SpatialSculptor() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.35, ease: "easeOut" }}
-                    className="border-t border-white/20 pt-4 flex flex-col md:flex-row md:items-end justify-between gap-4"
+                    className="border-t border-white/20 pt-2.5 sm:pt-4 flex flex-col md:flex-row md:items-end justify-between gap-2 sm:gap-4"
                   >
-                    <div className="space-y-1.5 max-w-xl">
-                      <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-                        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#F5F3EF]/70">
-                          STUDIO ARCHIVE REF: {activeMaterial.archiveRef}
+                    <div className="space-y-1 max-w-xl">
+                      <div className="flex flex-wrap items-center gap-x-2.5 gap-y-0.5">
+                        <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-[#F5F3EF]/75">
+                          REF: {activeMaterial.archiveRef}
                         </span>
-                        <span className="text-white/30 font-mono text-[11px]">•</span>
-                        <span className="font-mono text-[11px] uppercase tracking-[0.08em] text-[#F5F3EF]">
-                          {activeCycle.hudLabel} ({activeCycle.kelvin})
+                        <span className="text-white/30 font-mono text-[10px]">•</span>
+                        <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.08em] text-[#F5F3EF]">
+                          {activeMaterial.name}
                         </span>
                       </div>
-                      <p className="text-xs md:text-sm text-[#F5F3EF]/90 leading-relaxed">
+                      <p className="hidden sm:block text-xs md:text-sm text-[#F5F3EF]/90 leading-relaxed">
                         {activeMaterial.description}
                       </p>
                     </div>
 
-                    <div className="shrink-0 flex items-center gap-3 border border-white/15 bg-white/5 backdrop-blur-md px-3 py-2">
+                    <div className="hidden sm:flex shrink-0 items-center gap-3 border border-white/15 bg-white/5 backdrop-blur-md px-3 py-2">
                       <div>
                         <div className="font-mono text-[9px] uppercase tracking-[0.08em] text-[#F5F3EF]/60">
                           SUBSTRATE SPEC
