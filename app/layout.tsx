@@ -35,11 +35,10 @@ export const metadata: Metadata = {
     "Create House by Founder & Principal Architect Akash Mane. Contemplative residences defined by untamed light, monolithic stone, and enduring spatial calm.",
   icons: {
     icon: [
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
-      { url: "/favicon.ico", sizes: "any" },
+      { url: "/images/create-house-favicon.png?v=3", type: "image/png", sizes: "256x256" },
     ],
-    shortcut: "/favicon.ico",
-    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }],
+    shortcut: ["/images/create-house-favicon.png?v=3"],
+    apple: [{ url: "/images/create-house-favicon.png?v=3", sizes: "256x256", type: "image/png" }],
   },
 };
 
