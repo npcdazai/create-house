@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
 interface DiurnalOption {
@@ -167,12 +167,29 @@ const MATERIAL_PALETTES: MaterialOption[] = [
   },
 ];
 
+const AUTO_CYCLE_MS = 3500;
+
 export default function SpatialSculptor() {
   // Default active states per specification:
   // Diurnal Cycle: 03. GOLDEN HOUR 2700K
   // Material Palette: Roman Travertine
   const [selectedCycleId, setSelectedCycleId] = useState<string>("golden-hour");
   const [selectedMaterialId, setSelectedMaterialId] = useState<string>("roman-travertine");
+  const [isAutoCycling, setIsAutoCycling] = useState<boolean>(true);
+
+  useEffect(() => {
+    if (!isAutoCycling) return;
+
+    const timer = setInterval(() => {
+      setSelectedCycleId((prevId) => {
+        const currentIndex = DIURNAL_CYCLES.findIndex((item) => item.id === prevId);
+        const nextIndex = (currentIndex + 1) % DIURNAL_CYCLES.length;
+        return DIURNAL_CYCLES[nextIndex].id;
+      });
+    }, AUTO_CYCLE_MS);
+
+    return () => clearInterval(timer);
+  }, [isAutoCycling, selectedCycleId]);
 
   const activeCycle =
     DIURNAL_CYCLES.find((item) => item.id === selectedCycleId) ?? DIURNAL_CYCLES[2];
@@ -215,9 +232,24 @@ export default function SpatialSculptor() {
               {/* Diurnal Cycle Selector (4 Interactive Rows) */}
               <div className="space-y-2.5" role="radiogroup" aria-label="Diurnal Lighting Cycle">
                 <div className="flex items-center justify-between pb-1">
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
-                    DIURNAL SOLAR SEQUENCE
-                  </span>
+                  <div className="flex items-center gap-2.5">
+                    <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
+                      DIURNAL SOLAR SEQUENCE
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsAutoCycling((prev) => !prev)}
+                      className="inline-flex items-center gap-1.5 px-2 py-0.5 border border-black/15 font-mono text-[9px] uppercase tracking-[0.08em] text-[#141413] hover:bg-black/5 transition-colors cursor-pointer"
+                      title={isAutoCycling ? "Pause automatic solar sequence" : "Resume automatic solar sequence"}
+                    >
+                      <span
+                        className={`h-1.5 w-1.5 rounded-full ${
+                          isAutoCycling ? "bg-[#4A6B53] animate-pulse" : "bg-[#6E6A64]"
+                        }`}
+                      />
+                      <span>{isAutoCycling ? "AUTO" : "PAUSED"}</span>
+                    </button>
+                  </div>
                   <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#6E6A64]">
                     KELVIN / ILLUMINANCE
                   </span>
@@ -233,7 +265,7 @@ export default function SpatialSculptor() {
                         role="radio"
                         aria-checked={isActive}
                         onClick={() => setSelectedCycleId(cycle.id)}
-                        className={`group relative w-full text-left px-4 py-3.5 transition-colors duration-300 flex items-center justify-between focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] ${
+                        className={`group relative w-full text-left px-4 py-3.5 transition-colors duration-300 flex items-center justify-between overflow-hidden focus:outline-none focus-visible:ring-1 focus-visible:ring-[#141413] cursor-pointer ${
                           isActive
                             ? "bg-[#141413] text-[#F5F3EF]"
                             : "bg-transparent text-[#141413] hover:bg-black/[0.04]"
@@ -269,6 +301,18 @@ export default function SpatialSculptor() {
                             {cycle.kelvin}
                           </span>
                         </div>
+
+                        {/* Animated Auto-Cycle Progress Line */}
+                        {isActive && isAutoCycling && (
+                          <motion.span
+                            key={`progress-${cycle.id}`}
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: AUTO_CYCLE_MS / 1000, ease: "linear" }}
+                            style={{ backgroundColor: cycle.indicatorColor }}
+                            className="pointer-events-none absolute bottom-0 left-0 h-[2px] w-full origin-left"
+                          />
+                        )}
                       </button>
                     );
                   })}
